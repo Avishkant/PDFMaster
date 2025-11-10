@@ -97,24 +97,33 @@ app.post("/api/convert", upload.single("file"), async (req, res) => {
     fs.copyFileSync(srcTempPath, tempInputPath);
   } catch (e) {
     console.error("failed to copy temp input", e);
-    return res.status(500).json({ error: "Failed to prepare file for conversion" });
+    return res
+      .status(500)
+      .json({ error: "Failed to prepare file for conversion" });
   }
 
   // try soffice candidates
-  const sofficeCandidates = ["soffice", "soffice.bin", "soffice.exe"];
+  const configuredSoffice = (process.env.SOFFICE_CMD || "").trim();
+  const sofficeCandidates = (
+    configuredSoffice ? [configuredSoffice] : []
+  ).concat(["soffice", "soffice.bin", "soffice.exe"]);
   let sofficeUsed = null;
   let convertedPath = null;
   try {
     for (const cmd of sofficeCandidates) {
       try {
-        execFileSync(cmd, [
-          "--headless",
-          "--convert-to",
-          target,
-          "--outdir",
-          UPLOADS_DIR,
-          tempInputPath,
-        ], { stdio: "ignore" });
+        execFileSync(
+          cmd,
+          [
+            "--headless",
+            "--convert-to",
+            target,
+            "--outdir",
+            UPLOADS_DIR,
+            tempInputPath,
+          ],
+          { stdio: "ignore" }
+        );
         sofficeUsed = cmd;
         break;
       } catch (e) {
@@ -136,7 +145,9 @@ app.post("/api/convert", upload.single("file"), async (req, res) => {
     const outPath = path.join(UPLOADS_DIR, outName);
     if (!fs.existsSync(outPath)) {
       // conversion failed unexpectedly
-      return res.status(500).json({ error: "Conversion attempted but output not found" });
+      return res
+        .status(500)
+        .json({ error: "Conversion attempted but output not found" });
     }
 
     // register converted file
@@ -543,4 +554,11 @@ setInterval(() => {
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);
+  if (process.env.SOFFICE_CMD) {
+    console.log(`Using SOFFICE_CMD=${process.env.SOFFICE_CMD}`);
+  } else {
+    console.log(
+      "SOFFICE_CMD not set; server will look for soffice on PATH (soffice, soffice.bin, soffice.exe)"
+    );
+  }
 });

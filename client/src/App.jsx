@@ -23,14 +23,14 @@ function Nav() {
       }}
     >
       <Link to="/">Home</Link>
-  <Link to="/merge">Merge</Link>
-  <Link to="/split">Split</Link>
-  <Link to="/compress">Compress</Link>
-  <Link to="/images/pdf-to-jpg">PDF → JPG</Link>
-  <Link to="/images/jpg-to-pdf">Images → PDF</Link>
-  <Link to="/convert">Convert</Link>
-  <Link to="/rotate">Rotate</Link>
-  <Link to="/extract">Extract</Link>
+      <Link to="/merge">Merge</Link>
+      <Link to="/split">Split</Link>
+      <Link to="/compress">Compress</Link>
+      <Link to="/images/pdf-to-jpg">PDF → JPG</Link>
+      <Link to="/images/jpg-to-pdf">Images → PDF</Link>
+      <Link to="/convert">Convert</Link>
+      <Link to="/rotate">Rotate</Link>
+      <Link to="/extract">Extract</Link>
     </nav>
   );
 }

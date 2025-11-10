@@ -40,6 +40,21 @@ export default function Home() {
           title="Extract Pages"
           desc="Select and download specific pages from a PDF."
         />
+        <Card
+          to="/convert?target=docx"
+          title="PDF → Word"
+          desc="Convert a PDF document into an editable Word (.docx) file."
+        />
+        <Card
+          to="/convert?target=pptx"
+          title="PDF → PowerPoint"
+          desc="Convert a PDF into a PowerPoint (.pptx) presentation."
+        />
+        <Card
+          to="/convert?target=xlsx"
+          title="PDF → Excel"
+          desc="Convert a PDF into an Excel (.xlsx) workbook where possible."
+        />
       </div>
     </div>
   );
